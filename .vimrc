@@ -91,9 +91,12 @@ set backspace=indent,eol,start " make backspaces more powerfull
 set mouse=a                    " let user be able to use the mouse
 set background=dark            " set background scheme color to dark
 set incsearch                  " Allow incremental Searches
+
+" IDE Like omnicompletion
 set completeopt=menuone,longest " Always display menu, only complete longest, don't show preview
 
 
+" toggle paste mode
 nnoremap <leader>pp :set invpaste paste?<CR>
 
 " Color Scheme
@@ -152,7 +155,7 @@ let g:ctrlp_extensions = ['buffertag', 'dir']  " enable tags search
 " Tagbar
 map <leader>tt :TagbarToggle<CR>
 
-" SuperTab
+" SuperTa
 let g:SuperTabDefaultCompletionType = "context"
 
 " MiniBufExplorer
