@@ -14,17 +14,17 @@
 "
 " Written by Brad Phelan 2006
 " http://xtargets.com
-let g:scroll_factor = 0
+let g:scroll_factor = 80
 function! SmoothScroll(dir, windiv, factor)
    let wh=winheight(0)
    let i=0
-   while i < wh / a:windiv
+   while i < wh / (a:windiv * 2)
       let t1=reltime()
       let i = i + 1
       if a:dir=="d"
-         normal j
+         normal 2j
       else
-         normal k
+         normal 2k
       end
       redraw
       while 1
