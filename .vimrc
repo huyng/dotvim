@@ -10,6 +10,7 @@
 " Pathogen self contained bundle
 filetype off
 call pathogen#runtime_append_all_bundles()
+
 filetype on                    " enable filetype detection
 filetype plugin on              " enable filetype specific plugins
 filetype indent on
@@ -45,10 +46,14 @@ set showmode                   " display the current mode
 
 " a statusline, also on steroids
 " supplanted by powerline
-"set statusline=%F%m%r%h%w\ type=%y\ %{fugitive#statusline()}
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
+" au WinEnter * hi StatusLine term=reverse ctermbg=5 gui=undercurl guisp=Magenta 
+" au WinLeave * hi StatusLine term=reverse ctermfg=0 ctermbg=2 gui=bold,reverse 
+
+
+set statusline=%F%m%r%h%w\ type=%y\ %{fugitive#statusline()}
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 set laststatus=2        "Always Show Status Line
 
 
@@ -91,9 +96,11 @@ set backspace=indent,eol,start " make backspaces more powerfull
 set mouse=a                    " let user be able to use the mouse
 set background=dark            " set background scheme color to dark
 set incsearch                  " Allow incremental Searches
+set showtabline=0              "turn off tabline 
 
 " IDE Like omnicompletion
 set completeopt=menuone,longest " Always display menu, only complete longest, don't show preview
+
 
 
 " toggle paste mode
@@ -123,6 +130,10 @@ autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 " Key Mappings "
 """"""""""""""""
 
+" window layout
+map <C-w>1 :vertical-resize 100<CR>
+map <C-w>2 :vertical-resize 60<CR>
+
 
 " Use normal navigation in wrapped text
 map j gj
@@ -134,16 +145,29 @@ map [Down] gj
 nnoremap <SPACE> :
 nnoremap <SPACE><SPACE> :!
 
-" edit and source .vimrc 
-nnoremap <leader>ev :tabnew ~/.vimrc<cr>
-nnoremap <leader>sv :source ~/.vimrc<cr>
+" quit all
+nnoremap <Leader>qa :qall!
+
+"""""""""
+" Plugins
+"""""""""
+
 
 " Nerdtree
-let g:NERDTreeIgnore = ['\.pyc$', '\~$', '\.rbc$']
-noremap <Leader>nt :NERDTreeToggle<CR>
-noremap <Leader>nf :NERDTreeFind<cr>
+let g:NERDTreeIgnore = ['\.git', '\.pyc$', '\~$', '\.rbc$']
 let g:NERDTreeMinimalUI = 1
 let g:NERDTreeDirArrows = 1
+let g:NERDTreeChDirMode = 2  " change directories whenever the root of a nerd tree changes
+
+noremap <Leader>nt :NERDTreeToggle<CR>
+
+" go to bookmark in nerdtree
+noremap <Leader>g :NERDTree 
+"noremap <Leader>g :NERDTreeFromBookmark<Space>
+
+" save bookmark when inside of a nerdtree
+noremap <Leader>s :Bookmark 
+
 
 " CtrlP
 "
@@ -155,13 +179,16 @@ let g:ctrlp_extensions = ['buffertag', 'dir']  " enable tags search
 " Tagbar
 map <leader>tt :TagbarToggle<CR>
 
-" SuperTa
-let g:SuperTabDefaultCompletionType = "context"
-
-" MiniBufExplorer
-"let g:miniBufExplShowBufNumbers = 0  " down't show numbers in buf explorere
-let g:miniBufExplModSelTarget = 1  " select buffer open target
+" MiniBufExplorer 
+" http://www.vim.org/scripts/script.php?script_id=159 
+" https://github.com/fholgado/minibufexpl.vim <- we are using this one
+let g:miniBufExplShowBufNumbers = 1  " down't show numbers in buf explorere
+let g:miniBufExplModSelTarget = 1    " select buffer open target
 let g:miniBufExplUseSingleClick = 1
+let g:miniBufExplMapWindowNavVim = 1 " navigate to buffers using CTRL + hjkl
+let g:statusLineText = ""  " turn of status line
+
+
 
 
 " toggle minibuff using ,b
@@ -196,8 +223,7 @@ set gfn=EversonMono:h14.00
 autocmd VimResized * wincmd = " Autoresize window
 set vb " turn off sound beep
 
-" vim: set sw=4 ts=8 sts=0 et tw=78 nofen fdm=indent ft=vim :
-set showtabline=1        "turn off tabline 
+" vim:
 
 " turn off guitooblar
 if has("gui_running")
@@ -206,4 +232,12 @@ if has("gui_running")
 endif
 
 set t_Co=256
+
+set updatetime=4000
+
 colorscheme molokai
+" Any color related setings will override color scheme below
+
+hi StatusLine  cterm=NONE ctermbg=black ctermfg=cyan 
+hi StatusLineNC cterm=NONE ctermbg=16 ctermfg=darkgray 
+
