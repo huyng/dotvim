@@ -135,6 +135,10 @@ map <C-w>1 :vertical-resize 100<CR>
 map <C-w>2 :vertical-resize 60<CR>
 
 
+" buffer navigation
+map <Leader>, :bp<CR>
+map <Leader>. :bn<CR>
+
 " Use normal navigation in wrapped text
 map j gj
 map k gk
@@ -143,15 +147,21 @@ map [Down] gj
 
 " space to save your hands
 nnoremap <SPACE> :
+nnoremap ; :
 nnoremap <SPACE><SPACE> :!
 
 " quit all
 nnoremap <Leader>qa :qall!
 
+
 """""""""
 " Plugins
 """""""""
 
+" Zencoding
+
+let g:user_zen_leader_key = '<c-;>'
+let g:use_zen_complete_tag = 1
 
 " Nerdtree
 let g:NERDTreeIgnore = ['\.git', '\.pyc$', '\~$', '\.rbc$']
