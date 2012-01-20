@@ -1,9 +1,7 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =7
-let g:netrw_dirhist_1='/Users/huy/.vim/bundle/easytags.vim'
-let g:netrw_dirhist_2='/Users/huy/.dotfiles/tmux'
-let g:netrw_dirhist_3='/Users/huy'
-let g:netrw_dirhist_4='/Users/huy/iqengines/iqengines_style'
-let g:netrw_dirhist_5='/Users/huy/.vim/bundle/zencoding-vim'
-let g:netrw_dirhist_6='/Users/huy/.vim/bundle/zencoding-vim/autoload'
-let g:netrw_dirhist_7='/Users/huy/.vim/bundle/smooth-scroll'
+let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_1='/Users/huy/iqengines/puppet'
+let g:netrw_dirhist_2='/Users/huy/iqengines/icommand'
+let g:netrw_dirhist_3='/Users/huy/iqengines/iqengines_style'
+let g:netrw_dirhist_4='/Users/huy/iqengines/speedtag'
+let g:netrw_dirhist_5='/Users/huy/iqengines/iqengines_style'

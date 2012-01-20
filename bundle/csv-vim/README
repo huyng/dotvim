@@ -1,0 +1,33 @@
+http://vim.wikia.com/wiki/CSV
+
+                 " Assuming the heading line is line 1, the default
+
+:Sort            " sort by the current column excluding line 1
+:Sort 3          " sort by column 3 excluding line 1
+:Sort! 3         " same, reverse order
+:5,12Sort! 3     " same, but sort only lines 5 to 12 inclusive
+:Sort n          " numeric sort by the current column
+:Sort 3 n        " same, by column 3
+:Sort 3 x        " same, hex numbers
+:Sort i u        " ignore case; omit duplicate lines (keep unique)
+:Sort iu         " same
+:Sort 3 iu       " same, by column 3
+
+                 " Assuming the heading line is line 5
+
+:Sort            " sort only lines 6 to end of buffer
+:%Sort           " sort the whole buffer, including heading line
+:5,$Sort         " sort lines 5 to end of buffer, including heading line
+:4,$Sort         " sort lines 4 to end of buffer, including heading line
+:1,6Sort         " sort lines 1 to 6, including heading line
+
+                 " Assuming the heading line is line 0 (disabled)
+
+:Sort            " sort the whole buffer
+
+" The n and x options use integers ("12.9" is 12, overflow is ignored).
+" Use the f option for floating point (:version must show +float).
+" Non-numbers sort before numbers.
+:Sort f          " sort using floats in current column
+:Sort 3 f        " same, by column 3
+:5,12Sort! 3 f   " reverse sort lines in range using column 3 floats

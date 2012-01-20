@@ -130,9 +130,22 @@ autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 " Key Mappings "
 """"""""""""""""
 
+" Text objects
+" http://blog.carbonfive.com/2011/10/17/vim-text-objects-the-definitive-guide/
+
+" buffer completion M-n
+inoremap n <C-n>
+inoremap p <C-p>
+
+
+
 " window layout
 map <C-w>1 :vertical-resize 100<CR>
 map <C-w>2 :vertical-resize 60<CR>
+
+" search and replace
+map <Leader>r :%s/
+vmap <Leader>r :s/
 
 
 " buffer navigation
@@ -145,6 +158,23 @@ map k gk
 map [Up] gk
 map [Down] gj
 
+map <C-f> 5zl
+map <C-b> 5zh
+
+" move left
+imap <C-f> <C-o>l
+
+" move right
+imap <C-b> <C-o>h
+
+
+" move down
+imap <C-n> <C-o>gj
+
+" move up
+imap <C-p> <C-o>gk
+
+
 " space to save your hands
 nnoremap <SPACE> :
 nnoremap ; :
@@ -156,11 +186,14 @@ nnoremap <Leader>qa :qall!
 
 """""""""
 " Plugins
-"""""""""
+
+" autocomplehav
+let g:acp_behaviorKeywordLength = -1
+
+
 
 " Zencoding
-
-let g:user_zen_leader_key = '<c-;>'
+let g:user_zen_leader_key = '<c-l>'
 let g:use_zen_complete_tag = 1
 
 " Nerdtree
@@ -178,11 +211,15 @@ noremap <Leader>g :NERDTree
 " save bookmark when inside of a nerdtree
 noremap <Leader>s :Bookmark 
 
+" Ack
+map <Leader>F :Ack  
+
 
 " CtrlP
 "
 " this conflicts with fugitive-git, use ctrlp_custom_ignore
 " set wildignore+=*/.git/*,*/.hg/*,*/.svn/*   " for Linux/MacOSX
+let g:ctrlp_map = '<Leader>f'
 let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
 let g:ctrlp_extensions = ['buffertag', 'dir']  " enable tags search
 
@@ -197,7 +234,6 @@ let g:miniBufExplModSelTarget = 1    " select buffer open target
 let g:miniBufExplUseSingleClick = 1
 let g:miniBufExplMapWindowNavVim = 1 " navigate to buffers using CTRL + hjkl
 let g:statusLineText = ""  " turn of status line
-
 
 
 
@@ -235,8 +271,10 @@ set vb " turn off sound beep
 
 " vim:
 
+" GUI Options
 " turn off guitooblar
 if has("gui_running")
+    set mousefocus " focus follows mouse
     set guioptions=egmrt
     set lines=40 columns=110
 endif
@@ -245,6 +283,7 @@ set t_Co=256
 
 set updatetime=4000
 
+"colorscheme ir_black 
 colorscheme molokai
 " Any color related setings will override color scheme below
 

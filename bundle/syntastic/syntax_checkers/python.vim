@@ -10,7 +10,7 @@
 " in order to force the use of pyflakes if both flake8 and pyflakes are
 " available, add this to your .vimrc:
 "
-"   let g:syntastic_python_checker = 'pyflakes'
+let g:syntastic_python_checker = 'pyflakes'
 
 if exists("loaded_python_syntax_checker")
     finish
