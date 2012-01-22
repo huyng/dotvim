@@ -100,6 +100,11 @@ set hlsearch
 set ignorecase                 " ignore casing 
 set smartcase                  " ignore casing if search pattern is all lowercase, otherwise obey spacing
 
+" ================ Tag Managment ====================
+set tags=./tags;/  " search for tags in the current directory and recurse up
+
+
+
 " ================ Turn Off Swap Files ==============
 set noswapfile
 set nobackup
@@ -223,6 +228,13 @@ nnoremap <Leader>qa :qall!
 
 " ================ Plugins  ===================
 
+" Most Recently Used (:MRU)
+" bring up most recently used menu
+noremap <Leader>mm :MRU<CR>
+
+" ---- Easy Tags
+" let g:easytags_updatetime_autodisable=1
+
 " ---- autocomplpopup
 let g:acp_behaviorKeywordLength = -1
 
@@ -232,20 +244,23 @@ let g:use_zen_complete_tag = 1
 
 " ---- Nerdtree
 let g:NERDTreeIgnore = ['\.git', '\.pyc$', '\~$', '\.rbc$']
+let g:NERDTreeWinSize = 24
 let g:NERDTreeMinimalUI = 1
+let g:NERDTreeShowLineNumbers = 0
 let g:NERDTreeDirArrows = 1
 let g:NERDTreeChDirMode = 2  " change directories whenever the root of a nerd tree changes
 noremap <Leader>nt :NERDTreeToggle<CR>
 
 " go to bookmark in nerdtree
-noremap <Leader>gb :NERDTreeFromBookmark<Space>
-noremap <Leader>g :NERDTree 
+noremap <Leader>nn :NERDTreeFromBookmark<Space>
+noremap <Leader>ng :NERDTree 
 
 " save bookmark when inside of a nerdtree
 noremap <Leader>s :Bookmark 
 
 " ---- Ack
-map <Leader>F :Ack  
+map <Leader>F :Ack 
+map <Leader>T :Ack 'TODO'<CR>
 
 " ---- CtrlP
 
@@ -256,7 +271,13 @@ let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
 let g:ctrlp_extensions = ['buffertag', 'dir']  " enable tags search
 
 " ---- Tagbar
-map <leader>tt :TagbarToggle<CR>
+map <leader>t :TagbarToggle<CR>
+let g:tagbar_width = 20
+let g:tagbar_type_puppet = {
+	    \ 'ctagstype' : 'puppet',
+        \ 'kinds': ['n:nodes', 'c:classes', 'd:defines', 's:sites'],
+	    \ 'sort'    : 0,
+	\ }
 
 " ---- MiniBufExplorer 
 " http://www.vim.org/scripts/script.php?script_id=159 
