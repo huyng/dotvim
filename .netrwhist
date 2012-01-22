@@ -1,7 +1,2 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =5
-let g:netrw_dirhist_1='/Users/huy/iqengines/puppet'
-let g:netrw_dirhist_2='/Users/huy/iqengines/icommand'
-let g:netrw_dirhist_3='/Users/huy/iqengines/iqengines_style'
-let g:netrw_dirhist_4='/Users/huy/iqengines/speedtag'
-let g:netrw_dirhist_5='/Users/huy/iqengines/iqengines_style'
+let g:netrw_dirhist_cnt =0
