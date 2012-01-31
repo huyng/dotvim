@@ -62,10 +62,21 @@ set sidescroll=1
 
 " ================ Statusline =======================
 
-set statusline=%F%m%r%h%w\ type=%y\ %{fugitive#statusline()}
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+set statusline=%f      " path from cwd to filename
+set statusline+=\ \    " separator
+" set statusline+=%h     " help file flag
+set statusline+=%m     " modified flag
+" set statusline+=%r     " read only flag
+set statusline+=%y     " filetype
+set statusline+=\      " separator
+set statusline+=%{fugitive#statusline()} " git status line
+set statusline+=%=     " left/right separator
+set statusline+=%l/%L  " cursor line/total lines
+
+" set statusline=%f%m%r%h%w\ type=%y\ %{fugitive#statusline()}
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
 set laststatus=2                "Always Show Status Line
 
 hi StatusLine  cterm=NONE ctermbg=black ctermfg=cyan 
@@ -102,6 +113,7 @@ set smartcase                  " ignore casing if search pattern is all lowercas
 
 " ================ Tag Managment ====================
 set tags=./tags;/  " search for tags in the current directory and recurse up
+map <F8> :!ctags -R .<CR>
 
 
 
@@ -125,6 +137,7 @@ autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 set hidden                     " Keep cycled-away buffers open (preserving undo, allowing buffer switch without write)
 let mapleader=","              " change the mapleader from \ to ,
 set nowrap                     " don't wrap by default 
+set showbreak=\ \ \ \ ...\ \ 
 set linebreak                  " when wrapping, use space to break words
 set matchpairs+=<:>            " match, to be used with % 
 set textwidth=610              " break lines when line length increases
@@ -140,9 +153,6 @@ set completeopt=menuone,longest " Always display menu, only complete longest, do
 nnoremap <leader>pp :set invpaste paste?<CR>
 
 
-"Sudow lets you write to disk if you forgot to do svim"
-command Sudow :w !sudo tee %
-command MarkDownPreview :!pub -i "%" -o "%.preview.html" preview; open "%.preview.html"
 
 " ================ KeyMaps ===================
 
@@ -154,6 +164,9 @@ map B :buffers<CR>:b
 
 " turn of search highlight
 map // :nohl<CR>
+autocmd InsertEnter * :setlocal nohlsearch
+autocmd InsertLeave * :setlocal hlsearch
+
 
 " move left
 imap <C-f> <C-o>l
@@ -235,8 +248,36 @@ noremap <Leader>mm :MRU<CR>
 " ---- Easy Tags
 " let g:easytags_updatetime_autodisable=1
 
-" ---- autocomplpopup
-let g:acp_behaviorKeywordLength = -1
+
+" ---- NeoCompl
+" Use neocomplcache.
+let g:neocomplcache_enable_at_startup = 1
+" Use smartcase.
+let g:neocomplcache_enable_smart_case = 1
+" Use camel case completion.
+let g:neocomplcache_enable_camel_case_completion = 1
+" Use underbar completion.
+let g:neocomplcache_enable_underbar_completion = 1
+" Set minimum syntax keyword length.
+let g:neocomplcache_min_syntax_length = 6
+let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+
+" AutoComplPop like behavior.
+let g:neocomplcache_enable_auto_select = 1
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+
+
+" ---- Tabular Alignment
+nmap <Leader>ll :Tabularize equals<CR>
+vmap <Leader>ll :Tabularize equals<CR>
+nmap <Leader>l; :Tabularize colons<CR>
+vmap <Leader>l; :Tabularize colons<CR>
+
+
+
+
 
 " ---- Zencoding
 let g:user_zen_leader_key = '<c-l>'
@@ -292,10 +333,50 @@ let g:statusLineText = ""               " turn of status line
 map <Leader>b :TMiniBufExplorer<cr>
 
 
+" =========== Custom functions & commands ===========
+
+" Sudow lets you write to disk if you forgot to do svim"
+command Sudow :w !sudo tee %
+command MarkDownPreview :!pub -i "%" -o "%.preview.html" preview; open "%.preview.html"
+
+" used to call an external command with visual output
+function! GetDocVisual()
+    let orig_a_reg = @a
+    try
+        silent normal! gv"ay
+        let cmd_pat = "getdoc -f %s %s"
+        let cmd = printf(cmd_pat, shellescape(bufname("%")), shellescape(@a))
+        echo system(cmd)
+        if v:shell_error
+            echoerr 'Failed to run ' . cmd
+        endif
+    finally
+        let @a = orig_a_reg
+    endtry
+endfunction
+function! GetDocNormal()
+    let orig_a_reg = @a
+    try
+        silent normal! "ayiw
+        let cmd_pat = "getdoc -f %s %s"
+        let cmd = printf(cmd_pat, shellescape(bufname("%")), shellescape(@a))
+        echo system(cmd)
+        if v:shell_error
+            echoerr 'Failed to run ' . cmd
+        endif
+    finally
+        let @a = orig_a_reg
+    endtry
+endfunction
+vmap <F1> :call GetDocVisual()<CR>
+map <F1> :call GetDocNormal()<CR>
+imap <F1> <ESC>:call GetDocNormal()<CR>i
+
+
 " GUI Options
 " turn off guitooblar
 if has("gui_running")
-    set gfn=EversonMono:h14.00
+    set gfn=EversonMono:h13.00
     set mousefocus " focus follows mouse
     set guioptions=egmrt
     set lines=40 columns=110

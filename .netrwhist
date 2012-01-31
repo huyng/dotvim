@@ -1,2 +1,7 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =0
+let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_1='/Users/huy/iqengines/iqedeveloper'
+let g:netrw_dirhist_2='/Users/huy/iqengines/webportal'
+let g:netrw_dirhist_3='/Users/huy/.local/bin/escapehtml'
+let g:netrw_dirhist_4='/Users/huy/iqengines/icommand'
+let g:netrw_dirhist_5='/Users/huy/Desktop/workspace'

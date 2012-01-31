@@ -1,0 +1,6 @@
+# vim: nofoldenable foldmethod=manual
+snippet exception
+	class ${1:SomeError}(Exception):
+		def __init__(self):
+			Exception.__init__(self, "${2}")
+
