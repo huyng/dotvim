@@ -132,6 +132,17 @@ autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 "
 " Editing
 "
+" 
+
+" Make sure Vim returns to the same line when you reopen a file.
+" Thanks, Amit
+augroup line_return
+    au!
+    au BufReadPost *
+        \ if line("'\"") > 0 && line("'\"") <= line("$") |
+        \     execute 'normal! g`"zvzz' |
+        \ endif
+augroup END
 
 " Store swapfiles in central location
 set hidden                     " Keep cycled-away buffers open (preserving undo, allowing buffer switch without write)
@@ -143,7 +154,7 @@ set matchpairs+=<:>            " match, to be used with %
 set textwidth=610              " break lines when line length increases
 set backspace=indent,eol,start " make backspaces more powerfull
 set mouse=a                    " let user be able to use the mouse
-set showtabline=0              "turn off tabline 
+set showtabline=0              " turn off tabline 
 
 " IDE Like omnicompletion
 set completeopt=menuone,longest " Always display menu, only complete longest, don't show preview
@@ -155,6 +166,19 @@ nnoremap <leader>pp :set invpaste paste?<CR>
 
 
 " ================ KeyMaps ===================
+
+" Jump to beginning of line & end of line. This is
+" much easier than typing $ or ^ 
+noremap H ^
+noremap L g_
+
+" Emacs bindings in command line mode
+cnoremap <C-a> <home>
+cnoremap <C-f> <Right>
+cnoremap <C-b> <Left>
+cnoremap <C-e> <end>
+
+cnoremap <C-e> <end>
 
 " set current directory to that of this file's
 nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
@@ -184,10 +208,10 @@ imap <C-p> <C-o>gk
 imap <C-e> <esc>$i<right>
 
 " map CTRL-a to beginning-of-line (insert mode)
-imap <C-a> <esc>0i
+imap <C-a> <C-o>0i
 
 " map CTRL-k to kill to end of line
-imap <C-k> <esc>d$a
+imap <C-k> <C-o>d$a
 
 " map CTRL-d to erase current letter
 imap <C-d> <C-o>x
