@@ -70,11 +70,9 @@ set statusline+=%m     " modified flag
 " set statusline+=%r     " read only flag
 set statusline+=%y     " filetype
 set statusline+=\      " separator
-set statusline+=%{fugitive#statusline()} " git status line
 set statusline+=%=     " left/right separator
 set statusline+=%l/%L  " cursor line/total lines
 
-" set statusline=%f%m%r%h%w\ type=%y\ %{fugitive#statusline()}
 " set statusline+=%#warningmsg#
 " set statusline+=%{SyntasticStatuslineFlag()}
 " set statusline+=%*
@@ -339,7 +337,6 @@ map <Leader>T :Ack 'TODO'<CR>
 
 " ---- CtrlP
 
-" this conflicts with fugitive-git, use ctrlp_custom_ignore
 " set wildignore+=*/.git/*,*/.hg/*,*/.svn/*   " for Linux/MacOSX
 "
 let g:ctrlp_map = 'gp'
