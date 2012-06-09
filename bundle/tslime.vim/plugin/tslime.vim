@@ -57,7 +57,15 @@ endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-vmap <C-c><C-c> "ry :call Send_to_Tmux(@r)<CR>
-nmap <C-c><C-c> vip<C-c><C-c>
+" set this variable to  automatically have a string sent to tmux
+if !exists("g:tmux_preset_command")
+    let g:tmux_preset_command = ""
+end
 
-nmap <C-c>v :call <SID>Tmux_Vars()<CR>
+vmap <C-e><C-e> "ry:call Send_to_Tmux(@r)<CR>
+nmap <C-e><C-e> V"ry:call Send_to_Tmux(@r)<CR>
+map  <F8> :call Send_to_Tmux(g:tmux_preset_command . "\n")<CR>
+
+
+
+nmap <C-e>v :call <SID>Tmux_Vars()<CR>
