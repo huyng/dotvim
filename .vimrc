@@ -24,6 +24,7 @@ set fileencodings=utf-8
 "
 " User Interface
 "
+
 set t_Co=256
 syntax on
 set background=light            " set background scheme color to dark
@@ -54,7 +55,7 @@ set wildmenu                   "enable ctrl-n and ctrl-p to scroll thru matches
 
 " ================ Scrolling ========================
 
-set scrolloff=14                "Start scrolling when we're 8 lines away from margins
+set scrolloff=5                "Start scrolling when we're 8 lines away from margins
 set sidescrolloff=15
 set sidescroll=1
 
@@ -96,7 +97,8 @@ set nowb"
 " ================ Indentation ======================
 
 set autoindent                 " copy indent from current line when starting a new line
-set smartindent
+set nosmartindent              " turns out smart indent isn't so smart; use cindent instead http://vim.wikia.com/wiki/Restoring_indent_after_typing_hash
+set cindent                    " more modern version of smart indent
 set smarttab                   " insert tabs on the start of a line according to
 set softtabstop=4
 set shiftwidth=4               " number of spaces to use for auto indent
@@ -107,9 +109,14 @@ set shiftround                 " use multiple of shiftwidth when indenting with 
 
 " ================ Search      ======================
 set incsearch                  " Allow incremental Searches
-set hlsearch
+set nohlsearch                 " disable search highlight
 set ignorecase                 " ignore casing 
 set smartcase                  " ignore casing if search pattern is all lowercase, otherwise obey spacing
+
+" use non regex search by default in visual mode and use \h as search highlight toggle
+map \h :set hlsearch!<CR>
+vnoremap / "+y/\V<C-r>+
+
 
 " ================ Tag Managment ====================
 set tags=./tags;/  " search for tags in the current directory and recurse up
@@ -124,7 +131,8 @@ set nowb
 
 
 " ================ OmniCompletion ===================
-autocmd FileType python set omnifunc=pythoncomplete#Complete
+" autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType python set omnifunc=
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
@@ -146,6 +154,7 @@ augroup END
 
 " Store swapfiles in central location
 set hidden                     " Keep cycled-away buffers open (preserving undo, allowing buffer switch without write)
+set switchbuf=useopen,usetab   " When switching buffers, jump to their tabs
 let mapleader=","              " change the mapleader from \ to ,
 set nowrap                     " don't wrap by default 
 set showbreak=\ \ \ \ ...\ \ 
@@ -155,6 +164,8 @@ set textwidth=610              " break lines when line length increases
 set backspace=indent,eol,start " make backspaces more powerfull
 set mouse=a                    " let user be able to use the mouse
 set showtabline=0              " turn off tabline 
+
+
 
 " IDE Like omnicompletion
 set completeopt=menuone,longest " Always display menu, only complete longest, don't show preview
@@ -178,7 +189,13 @@ cnoremap <C-f> <Right>
 cnoremap <C-b> <Left>
 cnoremap <C-e> <end>
 
-cnoremap <C-e> <end>
+" set wrap
+nnoremap <leader>w :set wrap!<CR>
+
+
+" search and replace
+noremap <leader>r :%s/
+vnoremap <leader>r "+y:%s/\V<C-r>+
 
 " set current directory to that of this file's
 nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
@@ -186,10 +203,6 @@ nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
 " Choose buffers using capital B"
 map B :buffers<CR>:b 
 
-" turn of search highlight
-map // :nohl<CR>
-autocmd InsertEnter * :setlocal nohlsearch
-autocmd InsertLeave * :setlocal hlsearch
 
 
 " move left
@@ -205,10 +218,10 @@ imap <C-n> <C-o>gj
 imap <C-p> <C-o>gk
 
 " map CTRL-e to end-of-line (insert mode)
-imap <C-e> <esc>$i<right>
+inoremap <C-e> <End>
 
 " map CTRL-a to beginning-of-line (insert mode)
-imap <C-a> <C-o>0i
+inoremap <C-a> <Home>
 
 " map CTRL-k to kill to end of line
 imap <C-k> <C-o>d$a
@@ -238,15 +251,12 @@ map <C-u> 10k
 map <C-w>1 :vertical resize 100<CR>
 map <C-w>2 :vertical resize 30<CR>
 
-" search and replace
-map <Leader>r :%s/
-vmap <Leader>r :s/
 
 " buffer navigation
 map <Leader>, :bp<CR>
 map <Leader>. :bn<CR>
-map <Leader>k :bd<CR>
-map <Leader>K :bd!<CR>
+map <Leader>k :BD<CR>
+map <Leader>K :BD!<CR>
 
 " Use normal navigation in wrapped text
 map j gj
@@ -283,7 +293,7 @@ let g:neocomplcache_enable_camel_case_completion = 1
 " Use underbar completion.
 let g:neocomplcache_enable_underbar_completion = 1
 " Set minimum syntax keyword length.
-let g:neocomplcache_min_syntax_length = 6
+let g:neocomplcache_min_syntax_length = 3
 let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 
 " AutoComplPop like behavior.
@@ -331,9 +341,20 @@ map <Leader>T :Ack 'TODO'<CR>
 
 " this conflicts with fugitive-git, use ctrlp_custom_ignore
 " set wildignore+=*/.git/*,*/.hg/*,*/.svn/*   " for Linux/MacOSX
-let g:ctrlp_map = '<Leader>f'
+"
+let g:ctrlp_map = 'gp'
+map gP :CtrlPBufTag<CR>
 let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
-let g:ctrlp_extensions = ['buffertag', 'dir']  " enable tags search
+let g:ctrlp_match_window_bottom = 1
+let g:ctrlp_extensions = ['buffertag']  " enable tags search
+let g:ctrlp_max_height = 10
+let g:ctrlp_prompt_mappings = {
+    \ 'PrtSelectMove("k")':   ['<c-p>', '<down>'],
+    \ 'PrtSelectMove("j")':   ['<c-n>', '<up>'],
+    \ 'PrtHistory(-1)':       [],
+    \ 'PrtHistory(1)':        [],
+    \ }
+
 
 " ---- Tagbar
 map <leader>t :TagbarToggle<CR>
@@ -343,6 +364,7 @@ let g:tagbar_type_puppet = {
         \ 'kinds': ['n:nodes', 'c:classes', 'd:defines', 's:sites'],
 	    \ 'sort'    : 0,
 	\ }
+
 
 " ---- MiniBufExplorer 
 " http://www.vim.org/scripts/script.php?script_id=159 
@@ -358,6 +380,8 @@ map <Leader>b :TMiniBufExplorer<cr>
 
 
 " =========== Custom functions & commands ===========
+
+
 
 " Sudow lets you write to disk if you forgot to do svim"
 command Sudow :w !sudo tee %
@@ -397,6 +421,18 @@ map <F1> :call GetDocNormal()<CR>
 imap <F1> <ESC>:call GetDocNormal()<CR>i
 
 
+" Tame the quickfix window (open/close using ,q)
+command! -bang -nargs=? QFix call QFixToggle(<bang>0)
+function! QFixToggle(forced)
+  if exists("g:qfix_win") && a:forced == 0
+    cclose
+    unlet g:qfix_win
+  else
+    copen 10
+    let g:qfix_win=bufnr("$")
+  endif
+endfunction
+
 " GUI Options
 " turn off guitooblar
 if has("gui_running")
@@ -404,6 +440,6 @@ if has("gui_running")
     set mousefocus " focus follows mouse
     set guioptions=egmrt
     set lines=40 columns=110
-    set clipboard=unnamed
+    " set clipboard=unnamed  " set the clipboard to macosx
 endif
 
