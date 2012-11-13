@@ -28,7 +28,7 @@ set fileencodings=utf-8
 set t_Co=256
 syntax on
 set background=light            " set background scheme color to dark
-colorscheme molokai             " colorscheme must be set after background
+colorscheme monokai             " colorscheme must be set after background
 autocmd VimResized * wincmd =   " Autoresize window
 set vb                          " turn off sound beep
 
